@@ -1,0 +1,62 @@
+version: "2.0"
+project:
+  name: "Slalom Chairlift"
+  description: "Airline booking and reservation platform"
+  github:
+    organization: "tristanl-slalom"
+
+services:
+  - name: "chairlift-be-flights"
+    type: "backend"
+    dependencies: []
+    deployment:
+      order: 1
+    exports:
+      - name: "ChairliftFlightsApiUrl"
+
+  - name: "chairlift-be-customers"
+    type: "backend"
+    dependencies: []
+    deployment:
+      order: 2
+    exports:
+      - name: "ChairliftCustomersApiUrl"
+
+  - name: "chairlift-be-bookings"
+    type: "backend"
+    dependencies:
+      - "chairlift-be-flights"
+      - "chairlift-be-customers"
+    imports:
+      - name: "ChairliftFlightsApiUrl"
+        from: "chairlift-be-flights"
+      - name: "ChairliftCustomersApiUrl"
+        from: "chairlift-be-customers"
+    deployment:
+      order: 3
+    exports:
+      - name: "ChairliftBookingsApiUrl"
+
+  - name: "chairlift-bff"
+    type: "backend"
+    dependencies:
+      - "chairlift-be-flights"
+      - "chairlift-be-customers"
+      - "chairlift-be-bookings"
+    imports:
+      - name: "ChairliftFlightsApiUrl"
+      - name: "ChairliftCustomersApiUrl"
+      - name: "ChairliftBookingsApiUrl"
+    deployment:
+      order: 4
+    exports:
+      - name: "ChairliftBFFApiUrl"
+
+  - name: "chairlift-fe"
+    type: "frontend"
+    dependencies:
+      - "chairlift-bff"
+    imports:
+      - name: "ChairliftBFFApiUrl"
+    deployment:
+      order: 5
