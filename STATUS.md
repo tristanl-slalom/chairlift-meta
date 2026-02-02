@@ -11,13 +11,13 @@
 
 ## Service Status
 
-| # | Service | Repository | Status | Tests | Deploy |
-|---|---------|-----------|--------|-------|--------|
-| 1 | Flights | [chairlift-be-flights](https://github.com/tristanl-slalom/chairlift-be-flights) | ✅ Complete | ✅ 4/4 | 🟡 Ready |
-| 2 | Customers | [chairlift-be-customers](https://github.com/tristanl-slalom/chairlift-be-customers) | ✅ Complete | ✅ 19/19 | 🟡 Ready |
-| 3 | Bookings | [chairlift-be-bookings](https://github.com/tristanl-slalom/chairlift-be-bookings) | ✅ Complete | ✅ Passing | 🟡 Ready |
-| 4 | BFF | [chairlift-bff](https://github.com/tristanl-slalom/chairlift-bff) | ✅ Complete | ✅ Passing | 🟡 Ready |
-| 5 | Frontend | [chairlift-fe](https://github.com/tristanl-slalom/chairlift-fe) | ✅ Complete | ✅ Passing | 🟡 Ready |
+| # | Service | Repository | Status | Tests | CI/CD | Deploy |
+|---|---------|-----------|--------|-------|-------|--------|
+| 1 | Flights | [chairlift-be-flights](https://github.com/tristanl-slalom/chairlift-be-flights) | ✅ Complete | ✅ 4/4 | ✅ Workflows | 🟡 Ready |
+| 2 | Customers | [chairlift-be-customers](https://github.com/tristanl-slalom/chairlift-be-customers) | ✅ Complete | ✅ 19/19 | ✅ Workflows | 🟡 Ready |
+| 3 | Bookings | [chairlift-be-bookings](https://github.com/tristanl-slalom/chairlift-be-bookings) | ✅ Complete | ✅ Passing | ✅ Workflows | 🟡 Ready |
+| 4 | BFF | [chairlift-bff](https://github.com/tristanl-slalom/chairlift-bff) | ✅ Complete | ✅ Passing | ✅ Workflows | 🟡 Ready |
+| 5 | Frontend | [chairlift-fe](https://github.com/tristanl-slalom/chairlift-fe) | ✅ Complete | ✅ Passing | ✅ Workflows | 🟡 Ready |
 
 **Legend**:
 - ✅ Complete - Code implemented and committed
@@ -69,6 +69,41 @@
 - [x] Scripts copied and adapted
 - [x] GitHub repositories created
 - [x] .gitignore configured
+
+## AWS Setup Required
+
+Before deploying, configure AWS OIDC for GitHub Actions:
+
+### Automated Setup (Recommended)
+
+```bash
+./scripts/setup-aws-oidc.sh
+```
+
+This will:
+- ✅ Create OIDC provider in AWS
+- ✅ Create IAM role for each service
+- ✅ Set GitHub secrets (AWS_ROLE_ARN, AWS_REGION)
+- ✅ Create production environments
+
+### Manual Setup
+
+See detailed instructions in `docs/AWS_SETUP.md`
+
+### Verify Setup
+
+```bash
+# Check secrets are configured
+gh secret list --repo tristanl-slalom/chairlift-be-flights
+gh secret list --repo tristanl-slalom/chairlift-be-customers
+gh secret list --repo tristanl-slalom/chairlift-be-bookings
+gh secret list --repo tristanl-slalom/chairlift-bff
+gh secret list --repo tristanl-slalom/chairlift-fe
+```
+
+Expected secrets:
+- `AWS_ROLE_ARN`
+- `AWS_REGION`
 
 ## Next Steps
 
